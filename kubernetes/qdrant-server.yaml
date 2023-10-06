@@ -61,4 +61,4 @@ spec:
     - protocol: TCP
       port: 6333
       targetPort: 6333
-  type: LoadBalancer
+  type: ClusterIP

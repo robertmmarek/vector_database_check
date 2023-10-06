@@ -10,6 +10,8 @@ RUN yes | apt install build-essential
 
 RUN apt install update
 
+RUN pip install qdrant-client==1.5.4
+
 RUN pip install pysqlite3-binary
 
 RUN pip install chromadb==0.4.1
