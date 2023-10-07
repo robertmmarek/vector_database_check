@@ -53,7 +53,7 @@ spec:
             - name: QDRANT_SERVER_HOSTNAME
               value: 'qdrant-server-service.default.cluster.local'
             - name: QDRANT_SERVER_PORT
-              value: 6333
+              value: '6333'
 ---
 apiVersion: v1
 kind: Service
@@ -64,6 +64,6 @@ spec:
     app: embeddings-server
   ports:
     - protocol: TCP
-      port: 6333
-      targetPort: 6333
+      port: 6433
+      targetPort: 6433
   type: LoadBalancer
