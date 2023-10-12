@@ -20,6 +20,8 @@ RUN pip install onnxruntime==1.15.1
 
 RUN pip install "uvicorn[standard]"
 
+EXPOSE 6433
+
 WORKDIR /app/src
 
-CMD ["uvicorn", "server:app", "--port", "6433"]
+CMD ["uvicorn", "server:app", "--port", "6433", "--host", "0.0.0.0"]

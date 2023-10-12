@@ -45,7 +45,7 @@ spec:
         - name: embeddings-server
           image: robertmmarek/embeddings-server:latest
           ports:
-            - containerPort: 6333
+            - containerPort: 6433
           volumeMounts:
             - mountPath: "/embeddings/storage"
               name: embeddings-server-v
