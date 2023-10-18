@@ -13,6 +13,20 @@ spec:
     type: DirectoryOrCreate
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: embeddings-server-dev-volume
+spec:
+  capacity:
+    storage: 200Mb
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /workspaces/vector_database_check/docker/embedding_server/src/
+    type: DirectoryOrCreate
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: embeddings-server-volume-claim
@@ -22,6 +36,17 @@ spec:
   resources:
     requests:
       storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: embeddings-server-dev-volume-claim
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 100Mb
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,6 +66,9 @@ spec:
         - name: embeddings-server-v
           persistentVolumeClaim:
             claimName: embeddings-server-volume-claim
+        - name: embeddings-server-dev-v
+          persistentVolumeClaim:
+            claimName: embeddings-server-dev-volume-claim
       containers:
         - name: embeddings-server
           image: robertmmarek/embeddings-server:latest
@@ -49,9 +77,11 @@ spec:
           volumeMounts:
             - mountPath: "/embeddings/storage"
               name: embeddings-server-v
+            - mountPath: "/app/src"
+              name: embeddings-server-dev-v
           env:
             - name: QDRANT_SERVER_HOSTNAME
-              value: 'qdrant-server-service.default.cluster.local'
+              value: 'qdrant-server-service.default.svc.cluster.local'
             - name: QDRANT_SERVER_PORT
               value: '6333'
 ---

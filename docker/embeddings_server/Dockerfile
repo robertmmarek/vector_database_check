@@ -24,4 +24,4 @@ EXPOSE 6433
 
 WORKDIR /app/src
 
-CMD ["uvicorn", "server:app", "--port", "6433", "--host", "0.0.0.0"]
+CMD ["uvicorn", "server:app", "--port", "6433", "--host", "0.0.0.0", "--reload"]

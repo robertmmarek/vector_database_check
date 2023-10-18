@@ -7,6 +7,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.models import Distance, VectorParams
 from qdrant_client.http.models import PointStruct
 from qdrant_client.http.models import Filter, FieldCondition, MatchValue
+from qdrant_client.http.exceptions import UnexpectedResponse
 from chromadb.utils import embedding_functions
 
 QDRANT_HOST = os.environ["QDRANT_SERVER_HOSTNAME"]
@@ -38,7 +39,11 @@ async def embedding(request: EmbeddingRequest) -> EmbeddingResponse:
 
     embedding_size = len(em)
 
-    collection = q_client.get_collection(collection_name=COLLECTION_NAME)
+    try:
+        collection = q_client.get_collection(collection_name=COLLECTION_NAME)
+    except UnexpectedResponse:
+        collection = False
+
     if not collection:
         q_client.recreate_collection(
             collection_name=COLLECTION_NAME,
